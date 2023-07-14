@@ -1,28 +1,25 @@
-# from googleapiclient.discovery import build
 import os
-import requests
 import json
 from googleapiclient.discovery import build
 
-api_key: str = os.getenv("YOU_TUBE_API")
-
-youtube = build('youtube', 'v3', developerKey=api_key)
-
 
 class Channel:
-    """Класс для ютуб-канала"""
+    """Класс для ютуб-канала
+    #api_key: Содержит API-ключ для работы с API YouTube
+    #youtube: Объект, необходимый для работы с API
+    """
+    api_key: str = os.getenv("YOU_TUBE_API")
+    youtube = build('youtube', 'v3', developerKey=api_key)
 
     def __init__(self, channel_id: str) -> None:
         """Экземпляр инициализируется id канала. Дальше все данные будут подтягиваться по API."""
         self.channel_id = channel_id
+        self.channel = Channel.youtube.channels().list(id=self.channel_id, part='snippet,statistics').execute()
 
     def print_info(self) -> None:
         """Выводит в консоль информацию о канале."""
-        channel_id = self.channel_id
-        channel = youtube.channels().list(id=channel_id, part='snippet,statistics').execute()
-        return Channel.printj(channel)
-
-
+        channel = Channel.youtube.channels().list(id=self.channel_id, part='snippet,statistics').execute()
+        print(json.dumps(self.channel, indent=2, ensure_ascii=False))
 
     @staticmethod
     def printj(dict_to_print: dict) -> None:
