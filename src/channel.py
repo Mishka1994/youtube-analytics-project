@@ -23,6 +23,28 @@ class Channel:
         self.video_count = channel['items'][0]['statistics']['videoCount']
         self.total_views = channel['items'][0]['statistics']['viewCount']
 
+    def __str__(self):
+        return f"{self.title} - {self.url}"
+
+    def __add__(self, other):
+        return int(self.num_subscribers) + int(other.num_subscribers)
+
+    def __sub__(self, other):
+        return int(self.num_subscribers) - int(other.num_subscribers)
+
+    def __lt__(self, other):
+        return int(self.num_subscribers) < int(other.num_subscribers)
+
+    def __le__(self, other):
+        return int(self.num_subscribers) <= int(other.num_subscribers)
+
+    def __gt__(self, other):
+        return int(self.num_subscribers) > int(other.num_subscribers)
+
+
+    def __ge__(self, other):
+        return int(self.num_subscribers) >= int(other.num_subscribers)
+
     @property
     def channel_id(self):
         return self.__channel_id
@@ -50,3 +72,8 @@ class Channel:
         with open(str(name_file), 'w+') as file:
             info_about_channel = self.print_json(self.__dict__)
             file.write(info_about_channel)
+
+
+#moscowpython = Channel('UC-OVMPlMA3-YCIeg4z5z23A')
+
+#print(moscowpython.__dict__)
