@@ -4,16 +4,18 @@ from googleapiclient.discovery import build
 
 
 class Channel:
-    """Класс для ютуб-канала
-    #api_key: Содержит API-ключ для работы с API YouTube
-    #youtube: Объект, необходимый для работы с API
     """
+    Класс создает экземпляры, содержащие данные о конкретном YouTube канале
+    __channel_id: индивидуальный id канала
+    title: заголовок канала
+    description: описание канала
+    url: ссылка на канал
+    num_subscribers: количество подписчиков канала
+    video_count: количество видео на канале
+    total_views: общее количество просмотров на канале
 
+        """
     def __init__(self, channel_id='') -> None:
-        """
-        По информацию о канале по его id. Создает экземпляр класса Channel,
-        где свойствами экземпляра являются различные данные о канале.
-        """
         self.__channel_id = channel_id
         channel = Channel.get_service().channels().list(id=self.__channel_id, part='snippet,statistics').execute()
         self.title = channel['items'][0]['snippet']['title']
@@ -40,7 +42,6 @@ class Channel:
 
     def __gt__(self, other):
         return int(self.num_subscribers) > int(other.num_subscribers)
-
 
     def __ge__(self, other):
         return int(self.num_subscribers) >= int(other.num_subscribers)
@@ -74,6 +75,6 @@ class Channel:
             file.write(info_about_channel)
 
 
-#moscowpython = Channel('UC-OVMPlMA3-YCIeg4z5z23A')
+moscowpython = Channel('UC-OVMPlMA3-YCIeg4z5z23A')
 
-#print(moscowpython.__dict__)
+print(moscowpython.__dict__)
