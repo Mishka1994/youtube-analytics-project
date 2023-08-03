@@ -19,15 +19,25 @@ class Video:
 
     """
     def __init__(self, video_id):
-        self.video_id = video_id
+        try:
+            self.video_id = video_id
         # Получаем информацию о конкретном видео в виде словаря
-        response = Video.get_yt_object().videos().list(part='snippet,statistics,contentDetails,topicDetails',
+
+            self.response = Video.get_yt_object().videos().list(part='snippet,statistics,contentDetails,topicDetails',
                                                              id=video_id
                                                              ).execute()
-        self.title = response['items'][0]['snippet']['title']
-        self.link = f'https://www.youtube.com/watch?v={self.video_id}'
-        self.view_count: int = response['items'][0]['statistics']['viewCount']
-        self.like_count: int = response['items'][0]['statistics']['likeCount']
+            self.title = self.response['items'][0]['snippet']['title']
+            self.link = f'https://www.youtube.com/watch?v={self.video_id}'
+            self.view_count: int = self.response['items'][0]['statistics']['viewCount']
+            self.like_count: int = self.response['items'][0]['statistics']['likeCount']
+        except IndexError:
+            self.video_id = video_id
+            self.title = None
+            self.link = None
+            self.view_count = None
+            self.like_count = None
+
+
 
     def __repr__(self):
         return f"{self.__class__.__name__}({self.video_id}, {self.title}, {self.link}, {self.view_count},{self.like_count})"
@@ -52,3 +62,6 @@ class PLVideo(Video):
     def __init__(self, video_id, play_list_id):
         super().__init__(video_id)
         self.play_list_id = play_list_id
+
+
+broken_video = Video('broken_video_id')
